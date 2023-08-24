@@ -1,0 +1,87 @@
+syntax = "proto3";
+package OakSave;
+message Vec3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+message GameStatSaveGameData {
+  int32 stat_value = 1;
+  string stat_path = 2;
+}
+message InventoryCategorySaveData {
+  uint32 base_category_definition_hash = 1;
+  int32 quantity = 2;
+}
+message OakSDUSaveGameData {
+  int32 sdu_level = 1;
+  string sdu_data_path = 2;
+}
+message RegisteredDownloadableEntitlement {
+  int32 id = 1;
+  uint32 consumed = 2;
+  bool registered = 3;
+  bool seen = 4;
+}
+message RegisteredDownloadableEntitlements {
+  string entitlement_source_asset_path = 1;
+  repeated int64 entitlement_ids = 2;
+  repeated RegisteredDownloadableEntitlement entitlements = 3;
+}
+message ChallengeStatSaveGameData {
+  int32 current_stat_value = 1;
+  string challenge_stat_path = 2;
+}
+message OakChallengeRewardSaveGameData {
+  bool challenge_reward_claimed = 1;
+}
+message ChallengeSaveGameData {
+  int32 completed_count = 1;
+  bool is_active = 2;
+  bool currently_completed = 3;
+  int32 completed_progress_level = 4;
+  int32 progress_counter = 5;
+  repeated ChallengeStatSaveGameData stat_instance_state = 6;
+  string challenge_class_path = 7;
+  repeated OakChallengeRewardSaveGameData challenge_reward_info = 8;
+}
+message OakMailItem {
+  uint32 mail_item_type = 1;
+  string sender_display_name = 2;
+  string subject = 3;
+  string body = 4;
+  string gear_serial_number = 5;
+  string mail_guid = 6;
+  int64 date_sent = 7;
+  int64 expiration_date = 8;
+  string from_player_id = 9;
+  bool has_been_read = 10;
+}
+message OakCustomizationSaveGameData {
+  bool is_new = 1;
+  string customization_asset_path = 2;
+}
+message OakInventoryCustomizationPartInfo {
+  uint32 customization_part_hash = 1;
+  bool is_new = 2;
+}
+message OakProfileCustomizationLinkData {
+  string customization_name = 1;
+  bool active = 2;
+}
+message InventoryBalanceStateInitializationData {
+  int32 game_stage = 1;
+  string inventory_data = 2;
+  string inventory_balance_data = 3;
+  string manufacturer_data = 4;
+  repeated string part_list = 5;
+  repeated string generic_part_list = 6;
+  bytes additional_data = 7;
+  repeated string customization_part_list = 8;
+}
+message OakInventoryItemSaveGameData {
+  bytes item_serial_number = 1;
+  int32 pickup_order_index = 2;
+  int32 flags = 3;
+  InventoryBalanceStateInitializationData development_save_data = 5;
+}
