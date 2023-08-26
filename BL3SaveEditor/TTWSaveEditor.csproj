@@ -221,10 +221,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AdonisUI">
-      <Version>1.17.0</Version>
+      <Version>1.17.1</Version>
     </PackageReference>
     <PackageReference Include="AdonisUI.ClassicTheme">
-      <Version>1.17.0</Version>
+      <Version>1.17.1</Version>
     </PackageReference>
     <PackageReference Include="Autoupdater.NET.Official">
       <Version>1.7.0</Version>

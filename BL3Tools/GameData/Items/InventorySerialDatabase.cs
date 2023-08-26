@@ -79,7 +79,7 @@ namespace BL3Tools.GameData.Items {
         private static readonly string embeddedInvDataDBPath = "BL3Tools.GameData.Items.Mappings.balance_to_inv_data.json";
         private static readonly string embeddedPartDBPath = "BL3Tools.GameData.Items.Mappings.valid_part_database.json";
         private static readonly string embeddedGenericsPath = "BL3Tools.GameData.Items.Mappings.valid_generics.json";
-        private static readonly string embeddedReduxDatabasePath = "BL3Tools.GameData.Items.SerialDB.Inventory Serial Number Database REDUX.json";
+        private static readonly string embeddedReduxDatabasePath = "BL3Tools.GameData.Items.SerialDBR.Inventory Serial Number Database REDUX.json";
         static InventorySerialDatabase() {
             Console.WriteLine("Initializing InventorySerialDatabase...");
 

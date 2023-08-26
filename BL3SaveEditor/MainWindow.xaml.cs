@@ -513,28 +513,37 @@ namespace TTWSaveEditor
             dbgConsole = new Debug.DebugConsole();
 
 
-            if (bRedux) {
+            if (bRedux)
+            {
                 this.Title = "Tiny Tina's Wonderlands Save Editor **REDUX**";
 
-                // REDUX doesn't allow for different item types (Chaotic, Primordial, Ascended)
-                // so it is disabled here
                 ComboBox rdxITComboBox = (ComboBox)FindName("cbItemType");
-                rdxITComboBox.IsEnabled = false;
+                if (rdxITComboBox != null)
+                {
+                    rdxITComboBox.IsEnabled = false;
+                }
 
-                // REDUX is also only available on PC
-                // so platform selector is disabled
                 ComboBox rdxPlatComboBox = (ComboBox)FindName("cbPlatform");
-                rdxPlatComboBox.IsEnabled = false;
+                if (rdxPlatComboBox != null)
+                {
+                    rdxPlatComboBox.IsEnabled = false;
+                }
 
-                // REDUX max chaos level is 10
                 IntegerUpDown iudChaosUnlocked = (IntegerUpDown)FindName("ChaosUnlockedLevel");
-                iudChaosUnlocked.Maximum = 10;
-                IntegerUpDown iudChaosCurrent = (IntegerUpDown)FindName("ChaosCurrentLevel");
-                iudChaosCurrent.Maximum = 10;
-            }
-            
+                if (iudChaosUnlocked != null)
+                {
+                    iudChaosUnlocked.Maximum = 10;
+                }
 
-            ((TabControl)FindName("TabCntrl")).SelectedIndex = ((TabControl)FindName("TabCntrl")).Items.Count - 1;
+                IntegerUpDown iudChaosCurrent = (IntegerUpDown)FindName("ChaosCurrentLevel");
+                if (iudChaosCurrent != null)
+                {
+                    iudChaosCurrent.Maximum = 10;
+                }
+            }
+
+
+                        ((TabControl)FindName("TabCntrl")).SelectedIndex = ((TabControl)FindName("TabCntrl")).Items.Count - 1;
             //            AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
             //            AutoUpdater.RunUpdateAsAdmin = true;
             //#if !DEBUG
@@ -559,7 +568,7 @@ namespace TTWSaveEditor
                 Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() 
                 {
                     { Platform.PC, "PC Tiny Tina's Wonderlands Save/Profile (*.sav)|*.sav" },
-                    { Platform.PS4, "PS4 Tiny Tina's Wonderlands Save/Profile (*.sav)|*.sav" },
+                    { Platform.PS4, "PS4 Tiny Tina's Wonderlands Save/Profile (*.*)|*.*" },
                     { Platform.JSON, "PS4 Save Wizard Tiny Tina's Wonderlands Save/Profile (*.*)|*.*"}
                 };
 
@@ -799,8 +808,8 @@ namespace TTWSaveEditor
         {
             OpenFileDialog fileDialog = new OpenFileDialog
             {
-                Title = "Select BL3 Saves",
-                Filter = "BL3 Save (*.sav)|*.sav",
+                Title = "Select TTWL Saves",
+                Filter = "TTWL Save (*.sav)|*.sav",
                 InitialDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Tiny Tina's Wonderlands", "Saved", "SaveGames"),
                 Multiselect = true
             };
@@ -840,8 +849,8 @@ namespace TTWSaveEditor
             // Ask the user for all the saves to backup
             OpenFileDialog fileDialog = new OpenFileDialog
             {
-                Title = "Backup BL3 Saves/Profiles",
-                Filter = "BL3 Save/Profile (*.sav)|*.sav",
+                Title = "Backup TTWL Saves/Profiles",
+                Filter = "TTWL Save/Profile (*.sav)|*.sav",
                 InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Tiny Tina's Wonderlands", "Saved", "SaveGames"),
                 Multiselect = true
             };
@@ -1395,7 +1404,7 @@ namespace TTWSaveEditor
 
         #region Customization Unlockers/Lockers
 
-        private void UnlockRoomDeco_Click(object sender, RoutedEventArgs e)
+        private void dRoomDeco_Click(object sender, RoutedEventArgs e)
         {
             // Useless because there's no room decoration in TTW.
         }

@@ -11,13 +11,13 @@
     xmlns:local="clr-namespace:TTWSaveEditor"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    Title="ProtoGibbed V1.0.0"
+    Title="Tiny Tina's Wonderlands Save Editor"
     Height="835" Width="1330"
     Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
     Closed="AdonisWindow_Closed"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     UseLayoutRounding="True"
-    mc:Ignorable="d" FontFamily="Segoe UI Black">
+    mc:Ignorable="d">
     <Window.Style>
         <Style BasedOn="{StaticResource {x:Type Window}}" TargetType="Window" />
     </Window.Style>
@@ -90,10 +90,6 @@
     </adonisControls:AdonisWindow.TitleBarContent>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="339*"/>
-            <ColumnDefinition Width="983*"/>
-        </Grid.ColumnDefinitions>
         <ToolBar
             x:Uid="ToolWindowToolbar"
             Height="30"
@@ -169,7 +165,7 @@
             Name="TabCntrl"
             Margin="0,30,0,0"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch" Grid.ColumnSpan="2">
+            VerticalAlignment="Stretch">
             <TabItem IsEnabled="{Binding saveGame, TargetNullValue=False}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -370,7 +366,7 @@
                             </Grid>
                         </GroupBox>
 
-                        <GroupBox Grid.Row="1" VerticalAlignment="Top" Height="222" Grid.RowSpan="2" Margin="0,39,0,0">
+                        <GroupBox Grid.Row="1" VerticalAlignment="Top" Height="243" Grid.RowSpan="2" Margin="0,39,0,0">
                             <Grid>
                                 <Label
                                     Height="18"
@@ -398,6 +394,17 @@
                                         VerticalContentAlignment="Center"
                                         Content="Weapon Slot #3"
                                         IsChecked="{Binding saveGame.Character, ConverterParameter=Weapon3, Converter={StaticResource ItemSlotConverter1}}" />
+                                    <Grid Margin="0,96,0,0" VerticalAlignment="Top">
+                                        <CheckBox
+        Width="110"
+        Height="20"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        VerticalContentAlignment="Center"
+        Content="Weapon Slot #4"
+        IsChecked="{Binding saveGame.Character, ConverterParameter=Weapon4, Converter={StaticResource ItemSlotConverter1}}" Margin="0,-73,0,0" />
+                                    </Grid>
+
                                 </Grid>
 
                                 <Grid Margin="0,76,0,0" VerticalAlignment="Top">
@@ -408,7 +415,7 @@
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content="Ring (Left)"
-                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Ring1, Converter={StaticResource ItemSlotConverter1}}" />
+                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Ring1, Converter={StaticResource ItemSlotConverter1}}" Margin="0,18,0,-18" />
                                 </Grid>
 
                                 <Grid Margin="0,104,0,0" VerticalAlignment="Top">
@@ -419,7 +426,7 @@
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content="Ring (Right)"
-                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Ring2, Converter={StaticResource ItemSlotConverter1}}" />
+                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Ring2, Converter={StaticResource ItemSlotConverter1}}" Margin="0,18,0,-18" />
                                 </Grid>
 
                                 <Grid Margin="0,132,0,0" VerticalAlignment="Top">
@@ -430,7 +437,7 @@
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content="Pauldron"
-                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Pauldron, Converter={StaticResource ItemSlotConverter1}}" />
+                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Pauldron, Converter={StaticResource ItemSlotConverter1}}" Margin="0,18,0,-18" />
                                 </Grid>
 
                                 <Grid Margin="0,160,0,0" VerticalAlignment="Top">
@@ -441,7 +448,7 @@
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content="Amulet"
-                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Amulet, Converter={StaticResource ItemSlotConverter1}}" />
+                                        IsChecked="{Binding saveGame.Character, ConverterParameter=Amulet, Converter={StaticResource ItemSlotConverter1}}" Margin="0,18,0,-18" />
                                 </Grid>
 
                                 <Grid Margin="0,188,0,0" VerticalAlignment="Top">
@@ -452,12 +459,12 @@
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content="Secondary Spell"
-                                        IsChecked="{Binding saveGame.Character, ConverterParameter=SecondSpell, Converter={StaticResource ItemSlotConverter1}}" />
+                                        IsChecked="{Binding saveGame.Character, ConverterParameter=SecondSpell, Converter={StaticResource ItemSlotConverter1}}" Margin="0,18,0,-18" />
                                 </Grid>
                             </Grid>
                         </GroupBox>
 
-                        <GroupBox Grid.Row="2" VerticalAlignment="Top" Height="102" Margin="0,43,0,0">
+                        <GroupBox Grid.Row="2" VerticalAlignment="Top" Height="102" Margin="0,55,0,0">
                             <Grid>
                                 <Label
                                     Height="18"
@@ -483,7 +490,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
-                                        Maximum="100"
+                                        Maximum="1000"
                                         Minimum="0"
                                         ToolTip="The unlocked level of Mayhem of your character."
                                         Value="{Binding saveGame.Character.GameStateSaveDataForPlaythroughs[0].MayhemUnlockedLevel, Mode=TwoWay}" />
@@ -507,7 +514,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
-                                        Maximum="100"
+                                        Maximum="1000"
                                         Minimum="0"
                                         ToolTip="The current enabled level of Mayhem of your character."
                                         Value="{Binding saveGame.Character.GameStateSaveDataForPlaythroughs[0].MayhemLevel, Mode=TwoWay}" />
@@ -796,7 +803,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem IsEnabled="False">
+            <TabItem IsEnabled="True">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image
@@ -1305,22 +1312,6 @@
                                     Maximum="{Binding Path=maximumXP}"
                                     Minimum="0"
                                     Value="{Binding Path=SelectedSerial.Level}" />
-
-                                <Label
-                                    Margin="10,36,0,0"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Top"
-                                        Content="Item Type: "
-                                        FontWeight="Normal" />
-
-                                <ComboBox
-                                        Name="cbItemType"
-                                        Margin="115,32,10,0"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Top"
-                                        IsEnabled="{Binding SelectedSerial.InventoryKey, TargetNullValue=False}"
-                                        ItemsSource="{Binding ValidItemTypes}"
-                                        SelectedValue="{Binding SelectedItemTypes, Mode=TwoWay}" />
 
                                 <ComboBox
                                     Margin="115,60,104,0"
@@ -2532,7 +2523,7 @@
                                 <LineBreak />
                             </TextBlock>
 
-                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><Run/><LineBreak/><Run Text="v1.0.0"/><LineBreak/><Run Text="ProtoGibbed"/><LineBreak/><Run Text="    New Inventory UI"/><LineBreak/><Run Text="    Updated Raw Tab to be unlocked"/><LineBreak/><Run Text="    New Font for easier reading"/><LineBreak/><Run/><LineBreak/><Run/><LineBreak/></TextBlock>
+                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><Run Text="ProtoGibbed V1.0.0"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing (Thank Levin for sharing the csv files!)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.1"/><LineBreak/><Run Text="        • Removed Bold Font"/><LineBreak/><Run Text="        • Fixed Redux Mode Maybe (I don't have a save to test [but at least it prevents the crash])"/><LineBreak/><Run Text="        • Added Working Fast Travel Tab (not sure how it will affect story)"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon (not sure if it will break/delete current item due to how the previous code handles items in slot)"/><LineBreak/><Run Text="        "/><LineBreak/></TextBlock>
                         </WrapPanel>
                     </Grid>
 

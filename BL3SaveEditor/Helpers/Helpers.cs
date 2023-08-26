@@ -321,28 +321,28 @@ namespace TTWSaveEditor.Helpers
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
             //// Check for invalid usages            
-            //if (value[0].GetType() != typeof(Character) || value[1].GetType() != typeof(bool) || value[2].GetType() != typeof(int)) return null;
+            if (value[0].GetType() != typeof(Character) || value[1].GetType() != typeof(bool) || value[2].GetType() != typeof(int)) return null;
 
-            //bool bUpdateDictionaries = (chx != (Character)value[0]);
+            bool bUpdateDictionaries = (chx != (Character)value[0]);
 
-            //chx = (Character)value[0];
-            //bShowDbgMaps = (bool)value[1];
-            //playthroughToShow = (int)value[2];
+            chx = (Character)value[0];
+            bShowDbgMaps = (bool)value[1];
+            playthroughToShow = (int)value[2];
 
-            //if (playthroughToShow < 0) return null;
+            if (playthroughToShow < 0) return null;
 
-            //var playthroughData = chx.ActiveTravelStationsForPlaythroughs[Math.Min(playthroughToShow, chx.ActiveTravelStationsForPlaythroughs.Count - 1)].ActiveTravelStations.Select(x => x.ActiveTravelStationName);
+            var playthroughData = chx.ActiveTravelStationsForPlaythroughs[Math.Min(playthroughToShow, chx.ActiveTravelStationsForPlaythroughs.Count - 1)].ActiveTravelStations.Select(x => x.ActiveTravelStationName);
 
-            //Dictionary<string, string> mapsToShow = bShowDbgMaps ? dbgMapsToShow : MapsToShow;
-            //List<BoolStringPair> result = new List<BoolStringPair>();
-            //foreach (KeyValuePair<string, string> kvp in mapsToShow)
-            //{
-            //    result.Add(new BoolStringPair(playthroughData.Contains(kvp.Key), kvp.Value));
-            //}
+            Dictionary<string, string> mapsToShow = bShowDbgMaps ? dbgMapsToShow : MapsToShow;
+            List<BoolStringPair> result = new List<BoolStringPair>();
+            foreach (KeyValuePair<string, string> kvp in mapsToShow)
+            {
+                result.Add(new BoolStringPair(playthroughData.Contains(kvp.Key), kvp.Value));
+            }
 
-            //result = result.OrderBy(x => x.Value).ToList();
+            result = result.OrderBy(x => x.Value).ToList();
 
-            //return result;
+            return result;
 
             return null;
         }
