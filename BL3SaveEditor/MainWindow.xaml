@@ -1322,6 +1322,23 @@
                                     SelectionChanged="ComboBox_SelectionChanged"/>
 
                                 <Label
+                                        Width="100"
+                                        Height="27"
+                                        Margin="10,32,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Center"
+                                        Content="Chaotic: "
+                                        FontWeight="Normal" />
+                                <ComboBox
+                                        Name="cbItemType"
+                                        Margin="115,32,20,0"
+                                        VerticalAlignment="Top"
+                                        IsEnabled="{Binding SelectedSerial.InventoryKey, TargetNullValue=False}"
+                                        ItemsSource="{Binding ValidItemTypes}"
+                                        SelectedValue="{Binding SelectedItemTypes, Mode=TwoWay}" />
+
+                                <Label
                                     Width="100"
                                     Height="24"
                                     Margin="10,60,0,0"
@@ -2523,7 +2540,7 @@
                                 <LineBreak />
                             </TextBlock>
 
-                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><Run Text="ProtoGibbed V1.0.0"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing (Thank Levin for sharing the csv files!)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.1"/><LineBreak/><Run Text="        • Removed Bold Font"/><LineBreak/><Run Text="        • Fixed Redux Mode Maybe (I don't have a save to test [but at least it prevents the crash])"/><LineBreak/><Run Text="        • Added Working Fast Travel Tab (not sure how it will affect story)"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon (not sure if it will break/delete current item due to how the previous code handles items in slot)"/><LineBreak/><Run Text="        "/><LineBreak/></TextBlock>
+                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><Run Text="ProtoGibbed V1.0.0"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing (Thank Levin for sharing the csv files!)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.1"/><LineBreak/><Run Text="        • Removed Bold Font"/><LineBreak/><Run Text="        • Fixed Redux Mode Maybe (I don't have a save to test [but at least it prevents the crash])"/><LineBreak/><Run Text="        • Added Working Fast Travel Tab (not sure how it will affect story)"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon (not sure if it will break/delete current item due to how the previous code handles items in slot)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.2"/><LineBreak/><Run Text="        • oopsie! Chaotic levels are back!"/><LineBreak/><Run Text="        "/><LineBreak/></TextBlock>
                         </WrapPanel>
                     </Grid>
 
