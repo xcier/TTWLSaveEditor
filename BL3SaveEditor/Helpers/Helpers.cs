@@ -359,8 +359,7 @@ namespace TTWSaveEditor.Helpers
     public class PlaythroughToStringConverter : IValueConverter
     {
         private static readonly string[] indexToString = new string[] {
-            "NVHM",
-            "TVHM"
+            "NVHM"
         };
         private Character chx = null;
 

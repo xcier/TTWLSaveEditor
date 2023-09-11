@@ -970,6 +970,22 @@ namespace TTWSaveEditor
             }
         }
 
+        public string LastActiveTravelStationsText
+        {
+            get
+            {
+                if (saveGame != null && saveGame.Character != null)
+                {
+                    return string.Join(", ", saveGame.Character.LastActiveTravelStationForPlaythroughs);
+                }
+                return string.Empty;
+            }
+            set
+            {
+
+            }
+        }
+
         #endregion
 
         #region Backpack / Bank
@@ -1831,6 +1847,15 @@ namespace TTWSaveEditor
             }
         }
 
+        private void SelectedPlaythroughBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 
     public class DelegateCommand : ICommand

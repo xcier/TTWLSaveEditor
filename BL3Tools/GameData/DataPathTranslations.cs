@@ -40,7 +40,7 @@ namespace BL3Tools.GameData
         public static uint MoneyHash { get; private set; }
         public static uint EridiumHash { get; private set; }
 
-        private static readonly string embeddedFastTravelDatabasePath = "BL3Tools.GameData.Mappings.fast_travel_to_name.json";
+       public static string embeddedFastTravelDatabasePath = "BL3Tools.GameData.Mappings.fast_travel_to_name.json";
 
         public static void Initialize()
         {

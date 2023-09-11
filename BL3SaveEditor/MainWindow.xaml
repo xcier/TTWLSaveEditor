@@ -803,7 +803,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem IsEnabled="True">
+            <TabItem IsEnabled="{Binding saveGame, TargetNullValue=False}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image
@@ -832,13 +832,13 @@
                                 Margin="0,0,0,0"
                                 HorizontalAlignment="Stretch">
                                 <Label
-                                    Margin="10,1,428,0"
+                                    Margin="0,1,933,0"
                                     VerticalContentAlignment="Center"
-                                    Content="Visited Teleporters" />
+                                    Content="Visited Teleporters:" HorizontalAlignment="Right" Width="147" />
 
                                 <ComboBox
                                     Name="SelectedPlaythroughBox"
-                                    Width="101"
+                                    Width="90"
                                     Height="25"
                                     Margin="0,0,10,0"
                                     HorizontalAlignment="Right"
@@ -849,6 +849,16 @@
                                     ItemsSource="{Binding Path=saveGame.Character, Converter={StaticResource PlaythroughToStringConverter1}, ConverterParameter=list}"
                                     RenderTransformOrigin="-1.376,0.25"
                                     SelectedValue="{Binding Path=saveGame.Character, Converter={StaticResource PlaythroughToStringConverter1}, ConverterParameter=value, Mode=OneWay}" />
+                                <TextBox
+    Margin="362,0,105,0"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Top"
+    Text="{Binding Path=LastActiveTravelStationsText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    TextWrapping="WrapWithOverflow" TextChanged="TextBox_TextChanged" />
+                                <Label
+                                    Margin="241,1,733,0"
+                                    VerticalContentAlignment="Center"
+                                    Content="Last Travel Station:" />
                             </Grid>
                         </GroupBox.Header>
 
@@ -883,23 +893,10 @@
                         </ScrollViewer>
                     </GroupBox>
 
-                    <CheckBox
-                        Name="DbgMapBox"
-                        Width="130"
-                        Height="24"
-                        Margin="0,10,28,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Checked="DbgMapBox_StateChange"
-                        Content="Show Debug Travels"
-                        IsChecked="{Binding Path=showDebugMaps, Mode=TwoWay}"
-                        IsEnabled="{Binding bSaveLoaded}"
-                        Unchecked="DbgMapBox_StateChange" />
-
                     <Button
                         Name="EnableAllTeleportersBtn"
                         Width="130"
-                        Margin="0,51,28,0"
+                        Margin="0,9,28,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="EnableAllTeleportersBtn_Click"
@@ -909,7 +906,7 @@
                     <Button
                         Name="DisableAllTeleportersBtn"
                         Width="130"
-                        Margin="0,91,28,0"
+                        Margin="0,42,28,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="DisableAllTeleportersBtn_Click"
@@ -1664,6 +1661,9 @@
                             <xctk:PropertyDefinition TargetProperties="PlayerClassData" IsExpandable="true" />
                             <xctk:PropertyDefinition TargetProperties="TimeOfDaySaveGameData" IsExpandable="true" />
                             <xctk:PropertyDefinition TargetProperties="UiTrackingSaveGameData" IsExpandable="true" />
+                            <xctk:PropertyDefinition TargetProperties="TutorialInfo" IsExpandable="true" />
+                            <xctk:PropertyDefinition TargetProperties="PlayerPrestige" IsExpandable="true" />
+                            <xctk:PropertyDefinition TargetProperties="PlayerInputBindings" IsExpandable="true" />
                             <xctk:PropertyDefinition TargetProperties="ChallengeCategoryCompletionPcts" IsExpandable="true" />
                         </xctk:PropertyGrid.PropertyDefinitions>
                         <xctk:PropertyGrid.SelectedObject>
@@ -2540,7 +2540,7 @@
                                 <LineBreak />
                             </TextBlock>
 
-                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><Run Text="ProtoGibbed V1.0.0"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing (Thank Levin for sharing the csv files!)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.1"/><LineBreak/><Run Text="        • Removed Bold Font"/><LineBreak/><Run Text="        • Fixed Redux Mode Maybe (I don't have a save to test [but at least it prevents the crash])"/><LineBreak/><Run Text="        • Added Working Fast Travel Tab (not sure how it will affect story)"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon (not sure if it will break/delete current item due to how the previous code handles items in slot)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.2"/><LineBreak/><Run Text="        • oopsie! Chaotic levels are back!"/><LineBreak/><Run Text="        "/><LineBreak/></TextBlock>
+                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><Run Text="ProtoGibbed V1.0.0"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing (Thank Levin for sharing the csv files!)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.1"/><LineBreak/><Run Text="        • Removed Bold Font"/><LineBreak/><Run Text="        • Fixed Redux Mode Maybe (I don't have a save to test [but at least it prevents the crash])"/><LineBreak/><Run Text="        • Added Working Fast Travel Tab (not sure how it will affect story)"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon (not sure if it will break/delete current item due to how the previous code handles items in slot)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.2"/><LineBreak/><Run Text="        • oopsie! Chaotic levels are back!"/><LineBreak/><Run Text="        "/><LineBreak/><Run Text="v1.0.3"/><LineBreak/><Run Text="        • Added unsupported weapon"/><LineBreak/><Run Text="        • Added last active fast travel station (I will eventually collect the data for the travel stations and make it similar to BL2 editor)"/><LineBreak/><Run Text="        • Made some minor UI tweaks (unlocked the last few missing things in Raw profile tab)"/><LineBreak/><Run/><LineBreak/><Run/><LineBreak/><Run/></TextBlock>
                         </WrapPanel>
                     </Grid>
 
