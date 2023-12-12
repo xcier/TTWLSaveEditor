@@ -39,7 +39,7 @@ namespace TTWSaveEditor
     {
 
         #region Databinding Data
-        public static string Version { get; private set; } = "1.1.6.7";
+        public static string Version { get; private set; } = "Manual";
 
         public static RoutedCommand DuplicateCommand { get; } = new RoutedCommand();
         public static RoutedCommand DeleteCommand { get; } = new RoutedCommand();

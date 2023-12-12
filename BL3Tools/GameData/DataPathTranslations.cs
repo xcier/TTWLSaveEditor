@@ -29,17 +29,20 @@ namespace BL3Tools.GameData
         public static readonly string GoldenKeyCurrencyPath = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey.InventoryCategory_GoldenKey";
         public static readonly string DiamondKeyCurrencyPath = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_DiamondKey.InventoryCategory_DiamondKey";
         public static readonly string MoneyCurrencyPath = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Money.InventoryCategory_Money";
-        public static readonly string EridiumCurrencyPath = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Eridium.InventoryCategory_Eridium";
+        public static readonly string MoonOrbCurrencyPath = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Eridium.InventoryCategory_Eridium";
         public static readonly string VaultCard1Path = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard1Key";
         public static readonly string VaultCard2Path = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard2Key";
+        public static readonly string VaultCoinsPath = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Rune.InventoryCategory_Rune";
+
 
         public static uint GoldenKeyHash { get; private set; }
         public static uint DiamondKeyHash { get; private set; }
         public static uint VaultCard1Hash { get; private set; }
         public static uint VaultCard2Hash { get; private set; }
         public static uint MoneyHash { get; private set; }
-        public static uint EridiumHash { get; private set; }
-
+        public static uint MoonOrbHash { get; private set; }
+        public static uint VaultCoinsHash { get; private set; }
+         
        public static string embeddedFastTravelDatabasePath = "BL3Tools.GameData.Mappings.fast_travel_to_name.json";
 
         public static void Initialize()
@@ -49,7 +52,8 @@ namespace BL3Tools.GameData
             VaultCard1Hash = CRC32.Get(VaultCard1Path);
             VaultCard2Hash = CRC32.Get(VaultCard2Path);
             MoneyHash = CRC32.Get(MoneyCurrencyPath);
-            EridiumHash = CRC32.Get(EridiumCurrencyPath);
+            MoonOrbHash = CRC32.Get(MoonOrbCurrencyPath);
+            VaultCoinsHash = CRC32.Get(VaultCoinsPath);
 
             Console.WriteLine("Initialized CRC32 hashes of customization & currency data");
 

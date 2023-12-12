@@ -261,7 +261,10 @@ namespace TTWSaveEditor.Helpers
                         currencyHash = DataPathTranslations.MoneyHash;
                         break;
                     case "eridium":
-                        currencyHash = DataPathTranslations.EridiumHash;
+                        currencyHash = DataPathTranslations.MoonOrbHash;
+                        break;
+                    case "vaultcoins":
+                        currencyHash = 3866544553;
                         break;
                     default:
                         break;

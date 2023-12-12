@@ -41,6 +41,7 @@
         <helpers:CustomPlayerColorToColorConverter x:Key="CustomPlayerColorToColorConverter1" />
         <helpers:CurrencyToIntegerConverter x:Key="MoneyToIntegerConverter" />
         <helpers:CurrencyToIntegerConverter x:Key="EridiumToIntegerConverter" />
+        <helpers:CurrencyToIntegerConverter x:Key="VaultCoinsToIntegerConverter" />
         <helpers:TravelStationConverter x:Key="TravelStationConverter1" />
         <helpers:PlaythroughToStringConverter x:Key="PlaythroughToStringConverter1" />
 
@@ -168,7 +169,7 @@
             VerticalAlignment="Stretch">
             <TabItem IsEnabled="{Binding saveGame, TargetNullValue=False}">
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
                         <Image
                             Width="27"
                             Height="26"
@@ -578,6 +579,7 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding Path=bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="2147483647"
                                         ToolTip="Current skill points available on the save"
                                         Value="{Binding saveGame.Character.AbilityData.AbilityPoints, Mode=TwoWay}" />
                                 </Grid>
@@ -684,6 +686,7 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="30"
                                         ToolTip="Amount of Strength of your character."
                                         Value="{Binding saveGame.Character.HeroPointsSaveData.Strength, Mode=TwoWay}" />
                                 </Grid>
@@ -706,6 +709,7 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="30"
                                         ToolTip="Amount of Dexterity of your character."
                                         Value="{Binding saveGame.Character.HeroPointsSaveData.Dexterity, Mode=TwoWay}" />
                                 </Grid>
@@ -728,6 +732,7 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="30"
                                         ToolTip="Amount of Intelligence of your character."
                                         Value="{Binding saveGame.Character.HeroPointsSaveData.Intelligence, Mode=TwoWay}" />
                                 </Grid>
@@ -750,6 +755,7 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="30"
                                         ToolTip="Amount of Widsom of your character."
                                         Value="{Binding saveGame.Character.HeroPointsSaveData.Wisdom, Mode=TwoWay}" />
                                 </Grid>
@@ -772,6 +778,7 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="30"
                                         ToolTip="Amount of Consitution of your character."
                                         Value="{Binding saveGame.Character.HeroPointsSaveData.Constitution, Mode=TwoWay}" />
                                 </Grid>
@@ -794,8 +801,38 @@
                                         VerticalAlignment="Top"
                                         IsEnabled="{Binding bSaveLoaded}"
                                         Minimum="0"
+                                        Maximum="30"
                                         ToolTip="Amount of Attunement of your character."
                                         Value="{Binding saveGame.Character.HeroPointsSaveData.Luck, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox VerticalAlignment="Top" Margin="0,261,0,-141" Grid.Row="2" Height="141">
+                            <Grid>
+                                <Label Height="18" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Currency" />
+
+                                <Grid Margin="0,20,0,0" VerticalAlignment="Top">
+
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="66">
+                                        <Label FontWeight="Normal" Content="Gold: " HorizontalAlignment="Left" Margin="10,10,0,0"
+                       VerticalAlignment="Top" Height="23" Width="55" />
+                                        <xctk:IntegerUpDown IsEnabled="{Binding bSaveLoaded}"
+                                    Value="{Binding saveGame.Character, ConverterParameter=money, Converter={StaticResource MoneyToIntegerConverter}, Mode=TwoWay}"
+                                    HorizontalAlignment="Stretch" Margin="70,10,10,0" VerticalAlignment="Top"
+                                    ToolTip="Gold/Money" Minimum="0" Maximum="2147483647" Height="23" />
+                                        <Label FontWeight="Normal" Content="Moon Orbs:" HorizontalAlignment="Left" Margin="0,40,0,0"
+                       VerticalAlignment="Top" Height="20" />
+                                        <xctk:IntegerUpDown IsEnabled="{Binding bSaveLoaded}"
+                                    Value="{Binding saveGame.Character, ConverterParameter=eridium, Converter={StaticResource EridiumToIntegerConverter}, Mode=TwoWay}"
+                                    HorizontalAlignment="Stretch" Margin="70,40,10,0" VerticalAlignment="Top"
+                                    ToolTip="Used with the enchanting station unlocked after completing the main campaign" Minimum="0"  Maximum="16000" />
+                                        <Label FontWeight="Normal" Content="Lost Souls: " HorizontalAlignment="Left" Margin="4,65,0,-19"
+                                            VerticalAlignment="Top" Height="20" />
+                                        <xctk:IntegerUpDown IsEnabled="{Binding bSaveLoaded}"
+                                            Value="{Binding saveGame.Character, ConverterParameter=vaultcoins, Converter={StaticResource VaultCoinsToIntegerConverter}, Mode=TwoWay}"
+                                            HorizontalAlignment="Stretch" Margin="70,65,10,-19" VerticalAlignment="Top"
+                                            ToolTip="DLC currency" Minimum="0" Maximum="2147483647" />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </GroupBox>
@@ -1649,7 +1686,7 @@
                         AutoGenerateProperties="True"
                         IsReadOnly="False"
                         IsVirtualizing="True"
-                        ShowTitle="False"
+                        ShowTitle="True"
                         Style="{StaticResource PropertyGridStyle}">
                         <xctk:PropertyGrid.PropertyDefinitions>
                             <xctk:PropertyDefinition TargetProperties="AbilityData" IsExpandable="true" />
