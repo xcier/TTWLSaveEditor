@@ -75,7 +75,8 @@ namespace TTWSaveEditor
                 {
                     await Task.Delay(60);
                     var items = SlotItems;
-                    await Dispatcher.BeginInvoke(new Action(() => {
+                    await Dispatcher.BeginInvoke(new Action(() =>
+                    {
                         isSearch = true;
                         isExpanded = false;
                         if (LootlemonView.IsVisible)
@@ -294,7 +295,7 @@ namespace TTWSaveEditor
                 SelectedSerial.Balance = InventorySerialDatabase.GetBalanceFromShortName(value);
             }
         }
-        
+
         public ListCollectionView ValidManufacturers
         {
             get
@@ -368,7 +369,8 @@ namespace TTWSaveEditor
                     validParts = InventorySerialDatabase.GetValidPartsForParts(SelectedSerial.InventoryKey, SelectedSerial.Parts);
                 }
 
-                var validConstructedParts = validParts.Select(x => {
+                var validConstructedParts = validParts.Select(x =>
+                {
                     var part = x.Split('.').Last();
                     //if (ItemsInfo.TryGetValue(part.ToLower(), out var itemInfo))
                     //{
@@ -410,7 +412,8 @@ namespace TTWSaveEditor
 
                     var itemType = InventoryKeyDB.ItemTypeToKey.LastOrDefault(x => x.Value.Contains(SelectedSerial.InventoryKey)).Key;
                 }
-                var validConstructedParts = validParts.Select(x => {
+                var validConstructedParts = validParts.Select(x =>
+                {
                     var part = x.Split('.').Last();
                     //if (ItemsInfo.TryGetValue(part.ToLower(), out var itemInfo))
                     //{
@@ -606,9 +609,9 @@ namespace TTWSaveEditor
             bool bRedux = Properties.Settings.Default.bReduxModeEnabled;
 
             // if not REDUX populate all platforms, else only PC
-            if (!bRedux) 
+            if (!bRedux)
             {
-                Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() 
+                Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>()
                 {
                     { Platform.PC, "PC Tiny Tina's Wonderlands Save/Profile (*.sav)|*.sav" },
                     { Platform.PS4, "PS4 Tiny Tina's Wonderlands Save/Profile (*.*)|*.*" },
@@ -628,7 +631,7 @@ namespace TTWSaveEditor
                     OpenSave(fileDialog.FileName, platform);
                 }
             }
-            else 
+            else
             {
                 Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() {
                     { Platform.PC, "PC Tiny Tina's Wonderlands Save/Profile (*.sav)|*.sav" }
@@ -1087,25 +1090,70 @@ namespace TTWSaveEditor
         }
         private void NewItemBtn_Click(object sender, RoutedEventArgs e)
         {
-            Controls.ItemBalanceChanger changer = new Controls.ItemBalanceChanger() { Owner = this };
-            changer.ShowDialog();
-
-            // The user actually hit the save button and we have data about the item
-            if (changer.SelectedInventoryData != null)
+            string serialCode = "WL(BQAAAAAX2oA7BiDAgAIAAAAI)";
+            Console.WriteLine("Pasting serial code: {0}", serialCode);
+            try
             {
-                var serial = WonderlandsSerial.CreateSerialFromBalanceData(changer.SelectedBalance);
-                if (serial == null) return;
+                WonderlandsSerial item = WonderlandsSerial.DecryptSerial(serialCode);
+                if (item == null) return;
 
-                serial.InventoryData = changer.SelectedInventoryData;
-                // Set a manufacturer so that way the bindings don't lose their mind
-                serial.Manufacturer = InventorySerialDatabase.GetManufacturers().FirstOrDefault();
-
-                if (profile == null) saveGame.AddItem(serial);
-                else profile.BankItems.Add(serial);
+                if (profile == null) saveGame.AddItem(item);
+                else profile.BankItems.Add(item);
 
                 BackpackListView.ItemsSource = null;
                 BackpackListView.ItemsSource = SlotItems;
+                BackpackListView.Items.Refresh();
                 RefreshBackpackView();
+
+                var selectedValue = BackpackListView.Items.Cast<StringSerialPair>().Where(x => ReferenceEquals(x.Val2, item)).LastOrDefault();
+                BackpackListView.SelectedValue = selectedValue;
+            }
+            catch (BL3Tools.BL3Tools.BL3Exceptions.SerialParseException ex)
+            {
+                string message = ex.Message;
+                Console.WriteLine($"Exception ({message}) parsing serial: {ex.ToString()}");
+                if (ex.knowCause)
+                    MessageBox.Show($"Error parsing serial: {ex.Message}", "Serial Parse Exception", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                Console.WriteLine($"Exception ({message}) parsing serial: {ex.ToString()}");
+                MessageBox.Show($"Error parsing serial: {ex.Message}", "Serial Parse Exception", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+            }
+        }
+        private void NewWeaponBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string serialCode = "WL(BQAAAADLNIC7PIhAggIAIQAAAAAAABoQAAg=)";
+            Console.WriteLine("Pasting serial code: {0}", serialCode);
+            try
+            {
+                WonderlandsSerial item = WonderlandsSerial.DecryptSerial(serialCode);
+                if (item == null) return;
+
+                if (profile == null) saveGame.AddItem(item);
+                else profile.BankItems.Add(item);
+
+                BackpackListView.ItemsSource = null;
+                BackpackListView.ItemsSource = SlotItems;
+                BackpackListView.Items.Refresh();
+                RefreshBackpackView();
+
+                var selectedValue = BackpackListView.Items.Cast<StringSerialPair>().Where(x => ReferenceEquals(x.Val2, item)).LastOrDefault();
+                BackpackListView.SelectedValue = selectedValue;
+            }
+            catch (BL3Tools.BL3Tools.BL3Exceptions.SerialParseException ex)
+            {
+                string message = ex.Message;
+                Console.WriteLine($"Exception ({message}) parsing serial: {ex.ToString()}");
+                if (ex.knowCause)
+                    MessageBox.Show($"Error parsing serial: {ex.Message}", "Serial Parse Exception", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                Console.WriteLine($"Exception ({message}) parsing serial: {ex.ToString()}");
+                MessageBox.Show($"Error parsing serial: {ex.Message}", "Serial Parse Exception", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
             }
         }
         private void PasteCodeBtn_Click(object sender, RoutedEventArgs e)
