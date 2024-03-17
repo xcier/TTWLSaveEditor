@@ -168,7 +168,7 @@
             VerticalAlignment="Stretch">
             <TabItem IsEnabled="{Binding saveGame, TargetNullValue=False}">
                 <TabItem.Header>
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
                         <Image
                             Width="27"
                             Height="26"
@@ -264,6 +264,21 @@
                         VerticalAlignment="Top"
                         ItemsSource="{Binding Source={StaticResource PlatformDataSource}}"
                         SelectedValue="{Binding Path=saveGame.Platform}" />
+                    <Button Content="Import Missions" x:Name="ImportMissionsBtn" Click="ImportMissionsBtn_Click"
+                        Margin="0,143,1057,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="131"
+                        ToolTip="Imports Missions From Another Save" />
+                    <Button Content="Import Challenges" x:Name="ImportMissionsBtn_Copy" Click="ImportMissionsBtn_Click"
+                        Margin="0,143,921,0" VerticalAlignment="Top" RenderTransformOrigin="2.353,0.208"
+                        HorizontalAlignment="Right" Width="131"
+                        ToolTip="Imports Challenges From Another Save" />
+                    <Button Content="Import Skill Trees" x:Name="ImportSkillTreeBtn_Copy" Click="ImportSkillTreeBtn_Click"
+                        Margin="0,143,785,0" VerticalAlignment="Top" RenderTransformOrigin="2.353,0.208"
+                        HorizontalAlignment="Right" Width="131"
+                        ToolTip="Imports Skill Trees From Another Save" />
+                    <Button Content="Import Region Data" x:Name="ImportRegionsBtn_Copy" Click="ImportRegionsBtn_Click"
+                        Margin="0,143,649,0" VerticalAlignment="Top" RenderTransformOrigin="2.353,0.208"
+                        HorizontalAlignment="Right" Width="131"
+                        ToolTip="Imports Region Data From Another Save" />
                 </Grid>
             </TabItem>
 
@@ -530,7 +545,7 @@
                             <RowDefinition Height="260" />
                         </Grid.RowDefinitions>
 
-                        <GroupBox VerticalAlignment="Top">
+                        <GroupBox VerticalAlignment="Top" Height="128" Grid.RowSpan="2">
                             <Grid>
                                 <Label
                                     Height="18"
@@ -581,11 +596,30 @@
                                         Maximum="2147483647"
                                         ToolTip="Current skill points available on the save"
                                         Value="{Binding saveGame.Character.AbilityData.AbilityPoints, Mode=TwoWay}" />
+                                    <Label
+                                        Width="140"
+                                        Height="24"
+                                        Margin="0,29,0,-29"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        HorizontalContentAlignment="Left"
+                                        VerticalContentAlignment="Center"
+                                        Content="EXP:"
+                                        FontWeight="Normal" />
+                                    <xctk:IntegerUpDown
+                                        Margin="140,29,0,-25"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
+                                        IsEnabled="{Binding bSaveLoaded}"
+                                        Minimum="0"
+                                        Maximum="2147483647"
+                                        ToolTip="Current Experience on the save"
+                                        Value="{Binding saveGame.Character.ExperiencePoints, Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </GroupBox>
 
-                        <GroupBox Grid.Row="1" VerticalAlignment="Top">
+                        <GroupBox Grid.Row="1" VerticalAlignment="Top" Margin="0,94,0,0" Grid.RowSpan="2">
                             <Grid>
                                 <Label
                                     Height="18"
@@ -638,7 +672,7 @@
                             </Grid>
                         </GroupBox>
 
-                        <GroupBox Grid.Row="2" VerticalAlignment="Top">
+                        <GroupBox Grid.Row="2" VerticalAlignment="Top" Margin="0,90,0,-81">
                             <Grid>
                                 <Label
                                     Height="18"
@@ -806,7 +840,7 @@
                                 </Grid>
                             </Grid>
                         </GroupBox>
-                        <GroupBox VerticalAlignment="Top" Margin="0,261,0,-141" Grid.Row="2" Height="141">
+                        <GroupBox VerticalAlignment="Top" Margin="0,347,0,-227" Grid.Row="2" Height="141">
                             <Grid>
                                 <Label Height="18" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Currency" />
 
@@ -951,6 +985,59 @@
                 </Grid>
             </TabItem>
 
+            <TabItem IsEnabled="{Binding SaveGameLoaded, TargetNullValue=False}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="27" Height="26" Source="Icons\game\Regions.png" Margin="0 0 5 0"
+                                RenderOptions.BitmapScalingMode="Fant" />
+                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                Content="Region Data" FontWeight="Medium" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <xctk:IntegerUpDown x:Name="UniversalGameStageUpDown"
+                    Value="{Binding UniversalGameStage, UpdateSourceTrigger=PropertyChanged}"
+                    Minimum="0" Increment="1" Grid.Row="0" Margin="136,0,1051,691" Grid.RowSpan="2"/>
+                    <DataGrid x:Name="RegionsDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding SavedRegions}"
+                  Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,30,0,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Region Path" Binding="{Binding RegionPath}" />
+                            <DataGridTemplateColumn Header="Game Stage">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <xctk:IntegerUpDown Value="{Binding GameStage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBox HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="All Game Stages:" VerticalAlignment="Top" Width="106" Grid.RowSpan="2"/>
+                    <Button Content="Update All Regions" HorizontalAlignment="Left" VerticalAlignment="Top" Width="128" Margin="1166,0,0,0" Grid.RowSpan="2" Click="ApplyGameStageToAllRegions_Click" Height="25"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem IsEnabled="{Binding SaveGameLoaded, TargetNullValue=False}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="27" Height="26" Source="Icons/game/SkillTrees.png" Margin="0 0 5 0" RenderOptions.BitmapScalingMode="Fant" />
+                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Skill Trees" FontWeight="Medium" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <DataGrid x:Name="SkillTreeDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Path=saveGame.Character.AbilityData.TreeItemLists}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Skill Tree" Binding="{Binding TreeIdentifier}" Width="Auto"/>
+                            <DataGridTextColumn Header="Skill" Binding="{Binding ItemAssetPath}" Width="*"/>
+                            <DataGridTextColumn Header="Points" Binding="{Binding Points}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
             <TabItem
                 Name="InventoryTabItem"
                 HorizontalAlignment="Left"
@@ -987,100 +1074,67 @@
                             Modifiers="Ctrl" />
                     </Grid.InputBindings>
 
-                    <ToolBar
-                        x:Uid="BackpackToolBar"
-                        Height="35"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        AllowDrop="False"
-                        Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"
-                        Focusable="False">
+                    <ToolBar x:Uid="BackpackToolBar" AllowDrop="False" Focusable="False" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}" Height="35">
                         <Button Name="NewItemBtn" Click="NewItemBtn_Click">
                             <StackPanel Orientation="Horizontal">
-                                <Image
-                                    Width="27"
-                                    Height="26"
-                                    Margin="0,0,5,0"
-                                    RenderOptions.BitmapScalingMode="Fant"
-                                    Source="Icons\game\MinimapIcon_Pinging_Loot.png" />
-
-                                <Label
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Content="New Item"
-                                    FontWeight="Medium" />
+                                <Image Width="27" Height="26" Source="Icons\game\MinimapIcon_Pinging_Loot.png"
+                                        Margin="0 0 5 0" RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="New Item" FontWeight="Medium" />
                             </StackPanel>
                         </Button>
                         <Button Name="NewWeaponBtn" Click="NewWeaponBtn_Click">
                             <StackPanel Orientation="Horizontal">
-                                <Image
-                                    Width="27"
-                                    Height="26"
-                                    Margin="0,0,5,0"
-                                    RenderOptions.BitmapScalingMode="Fant"
-                                    Source="Icons\game\MinimapIcon_Pinging_Loot.png" />
-
-                                <Label
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Content="New Weapon"
-                                    FontWeight="Medium" />
+                                <Image Width="27" Height="26" Source="Icons\game\MinimapIcon_Pinging_Loot.png"
+                                        Margin="0 0 5 0" RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="New Weapon" FontWeight="Medium" />
                             </StackPanel>
                         </Button>
-
-                        <Button Name="PasteCodeBtn" Click="PasteCodeBtn_Click">
+                        <Button Click="PasteCodeBtn_Click" Name="PasteCodeBtn">
                             <StackPanel Orientation="Horizontal">
-                                <Image
-                                    Width="27"
-                                    Height="26"
-                                    Margin="0,0,5,0"
-                                    RenderOptions.BitmapScalingMode="Fant"
-                                    Source="Icons\game\AllModIcons_I2E.png" />
-
-                                <Label
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Content="Paste Code"
-                                    FontWeight="Medium" />
+                                <Image Width="27" Height="26" Source="Icons\game\AllModIcons_I2E.png" Margin="0 0 5 0"
+                                        RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="Paste Code" FontWeight="Medium" />
+                            </StackPanel>
+                        </Button>
+                        <Button Click="DUMPCodeBtn_Click" Name="DUMPCodeBtn">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="27" Height="26" Source="Icons\game\AllModIcons_I2E.png" Margin="0 0 5 0"
+                                        RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="Dump Codes" FontWeight="Medium" />
+                            </StackPanel>
+                        </Button>
+                        <Button Click="LoadCodeBtn_Click" Name="LoadCodeBtn">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="27" Height="26" Source="Icons\game\AllModIcons_I2E.png" Margin="0 0 5 0"
+                                        RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="Load Codes" FontWeight="Medium" />
                             </StackPanel>
                         </Button>
 
                         <Separator />
 
-                        <Button
-                            Name="SyncEquippedBtn"
-                            Click="SyncEquippedBtn_Click"
-                            IsEnabled="{Binding saveGame, TargetNullValue=False}">
+                        <Button Name="SyncEquippedBtn" Click="SyncEquippedBtn_Click"
+                                IsEnabled="{Binding SaveGameLoaded, TargetNullValue=False}">
                             <StackPanel Orientation="Horizontal">
-                                <Image
-                                    Width="27"
-                                    Height="26"
-                                    Margin="0,0,5,0"
-                                    RenderOptions.BitmapScalingMode="Fant"
-                                    Source="Icons\game\AllModIcons_I10.png" />
-
-                                <Label
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Content="Sync Equipped"
-                                    FontWeight="Medium" />
+                                <Image Width="27" Height="26" Source="Icons\game\AllModIcons_I10.png" Margin="0 0 5 0"
+                                        RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="Sync Equipped" FontWeight="Medium" />
                             </StackPanel>
                         </Button>
-
                         <Button Name="SyncAllBtn" Click="SyncAllBtn_Click">
                             <StackPanel Orientation="Horizontal">
-                                <Image
-                                    Width="27"
-                                    Height="26"
-                                    Margin="0,0,5,0"
-                                    RenderOptions.BitmapScalingMode="Fant"
-                                    Source="Icons\game\AllModIcons_I12.png" />
-
-                                <Label
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Content="Sync All"
-                                    FontWeight="Medium" />
+                                <Image Width="27" Height="26" Source="Icons\game\AllModIcons_I12.png" Margin="0 0 5 0"
+                                        RenderOptions.BitmapScalingMode="Fant" />
+                                <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Content="Sync All" FontWeight="Medium" />
                             </StackPanel>
                         </Button>
                     </ToolBar>

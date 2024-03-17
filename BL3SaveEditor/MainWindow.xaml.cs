@@ -5,6 +5,7 @@ using System.Windows;
 using BL3Tools;
 using BL3Tools.GameData;
 using AdonisUI;
+using OakSave;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Collections.Generic;
@@ -675,6 +676,10 @@ namespace TTWSaveEditor
                 bSaveLoaded = true;
                 // General tab
                 TabCntrl.SelectedIndex = 0;
+
+                // This allows us to load data into datagrids
+                RegionsDataGrid.ItemsSource = saveGame.Character.SavedRegions;
+                SkillTreeDataGrid.ItemsSource = saveGame.Character.AbilityData.TreeItemLists;
             }
 
             ((TabItem)FindName("RawTabItem")).IsEnabled = true;
@@ -1936,6 +1941,291 @@ namespace TTWSaveEditor
                 BackpackListView.ItemsSource = null;
                 BackpackListView.ItemsSource = SlotItems;
             }
+        }
+
+        private void ApplyGameStageToAllRegions_Click(object sender, RoutedEventArgs e)
+        {
+            if (UniversalGameStageUpDown.Value is int newGameStage)
+            {
+                if (saveGame?.Character?.SavedRegions != null)
+                {
+                    foreach (var region in saveGame.Character.SavedRegions)
+                    {
+                        region.GameStage = newGameStage;
+                    }
+
+                    SaveModifiedSaveGame();
+                    RegionsDataGrid.Items.Refresh();
+                }
+            }
+        }
+
+        private void ImportMissionsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // Reuse the platform filters defined previously
+            Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() {
+        { Platform.PC, "PC BL3 Save/Profile (*.sav)|*.sav|JSON Save (*.json)|*.json" },
+        { Platform.PS4, "PS4 BL3 Save/Profile (*.*)|*.*" }
+    };
+
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Title = "Select BL3 Save to Import Missions From",
+                Filter = string.Join("|", PlatformFilters.Values),
+                InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Borderlands 3", "Saved", "SaveGames"),
+            };
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                Platform platform = fileDialog.FilterIndex <= 2 ? Platform.PC : Platform.PS4;
+                ImportMissionsFromFile(fileDialog.FileName, platform);
+            }
+        }
+
+        private void ImportMissionsFromFile(string filePath, Platform platform)
+        {
+            var importSave = BL3Tools.BL3Tools.LoadFileFromDisk(filePath, platform) as BL3Save;
+
+            if (importSave != null && saveGame != null && importSave.Character != null && saveGame.Character != null)
+            {
+                // Directly copy mission data from the imported save to the current saveGame
+                saveGame.Character.MissionPlaythroughsDatas = new List<OakSave.MissionPlaythroughSaveGameData>(importSave.Character.MissionPlaythroughsDatas);
+
+                SaveModifiedSaveGame();
+            }
+        }
+
+        private void ImportChallengesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() {
+        { Platform.PC, "PC BL3 Save/Profile (*.sav)|*.sav|JSON Save (*.json)|*.json" },
+        { Platform.PS4, "PS4 BL3 Save/Profile (*.*)|*.*" }
+    };
+
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Title = "Select BL3 Save to Import Challenges From",
+                Filter = string.Join("|", PlatformFilters.Values),
+                InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Borderlands 3", "Saved", "SaveGames"),
+            };
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                Platform platform = fileDialog.FilterIndex <= 2 ? Platform.PC : Platform.PS4;
+                ImportChallengesFromFile(fileDialog.FileName, platform);
+            }
+        }
+
+        private void ImportChallengesFromFile(string filePath, Platform platform)
+        {
+            var importSave = BL3Tools.BL3Tools.LoadFileFromDisk(filePath, platform) as BL3Save;
+
+            if (importSave != null && saveGame != null && importSave.Character != null && saveGame.Character != null)
+            {
+                saveGame.Character.ChallengeDatas = new List<OakSave.ChallengeSaveGameData>(importSave.Character.ChallengeDatas);
+
+                saveGame.Character.ChallengeCategoryCompletionPcts = new OakSave.ChallengeCategoryProgressSaveData
+                {
+                    CategoryProgress = (byte[])importSave.Character.ChallengeCategoryCompletionPcts.CategoryProgress.Clone()
+                };
+
+                SaveModifiedSaveGame();
+            }
+        }
+
+        private void ImportSkillTreeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() {
+        { Platform.PC, "PC BL3 Save/Profile (*.sav)|*.sav|JSON Save (*.json)|*.json" },
+        { Platform.PS4, "PS4 BL3 Save/Profile (*.*)|*.*" }
+    };
+
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Title = "Select BL3 Save to Import Skill Trees From",
+                Filter = string.Join("|", PlatformFilters.Values),
+                InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Borderlands 3", "Saved", "SaveGames"),
+            };
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                Platform platform = fileDialog.FilterIndex <= 2 ? Platform.PC : Platform.PS4;
+                ImportSkillTreesFromFile(fileDialog.FileName, platform);
+            }
+        }
+
+        private void ImportSkillTreesFromFile(string filePath, Platform platform)
+        {
+            var importSave = BL3Tools.BL3Tools.LoadFileFromDisk(filePath, platform) as BL3Save;
+
+            if (importSave != null && saveGame != null && importSave.Character != null && saveGame.Character != null)
+            {
+                saveGame.Character.AbilityData = new OakPlayerAbilitySaveGameData
+                {
+                    AbilityPoints = importSave.Character.AbilityData.AbilityPoints,
+                    TreeItemLists = new List<OakAbilityTreeItemSaveGameData>(importSave.Character.AbilityData.TreeItemLists),
+                    AbilitySlotLists = new List<OakAbilitySlotSaveGameData>(importSave.Character.AbilityData.AbilitySlotLists),
+                    AugmentSlotLists = new List<OakActionAbilityAugmentSaveGameData>(importSave.Character.AbilityData.AugmentSlotLists),
+                    AugmentConfigurationLists = new List<OakActionAbilityAugmentConfigurationSaveGameData>(importSave.Character.AbilityData.AugmentConfigurationLists),
+                    TreeGrade = importSave.Character.AbilityData.TreeGrade
+                };
+
+                SaveModifiedSaveGame();
+            }
+        }
+
+        private void ImportRegionsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<Platform, string> PlatformFilters = new Dictionary<Platform, string>() {
+        { Platform.PC, "PC BL3 Save/Profile (*.sav)|*.sav|JSON Save (*.json)|*.json" },
+        { Platform.PS4, "PS4 BL3 Save/Profile (*.*)|*.*" }
+    };
+
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Title = "Select BL3 Save to Import Regions From",
+                Filter = string.Join("|", PlatformFilters.Values),
+                InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Borderlands 3", "Saved", "SaveGames"),
+            };
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                Platform platform = fileDialog.FilterIndex <= 2 ? Platform.PC : Platform.PS4;
+                ImportRegionsFromFile(fileDialog.FileName, platform);
+            }
+        }
+
+        private void ImportRegionsFromFile(string filePath, Platform platform)
+        {
+            var importSave = BL3Tools.BL3Tools.LoadFileFromDisk(filePath, platform) as BL3Save;
+
+            if (importSave != null && saveGame != null && importSave.Character != null && saveGame.Character != null)
+            {
+                saveGame.Character.SavedRegions = new List<OakSave.RegionSaveGameData>(importSave.Character.SavedRegions);
+
+                SaveModifiedSaveGame();
+            }
+        }
+
+        private void SaveModifiedSaveGame()
+        {
+            try
+            {
+
+                MessageBox.Show("Please save and reload the save to see changes!", "Data Imported!", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save the game: {ex.Message}", "Save Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void UpdateGameStages_Click(object sender, RoutedEventArgs e)
+        {
+            if (UniversalGameStageUpDown.Value.HasValue)
+            {
+                UpdateGameStageForAllRegions(UniversalGameStageUpDown.Value.Value);
+            }
+        }
+
+        private void UpdateGameStageForAllRegions(int newGameStage)
+        {
+            if (saveGame != null && saveGame.Character != null && saveGame.Character.SavedRegions != null)
+            {
+                foreach (var region in saveGame.Character.SavedRegions)
+                {
+                    region.GameStage = newGameStage;
+                }
+                // Changes are applied in memory but not saved to disk yet.
+                RegionsDataGrid.Items.Refresh();
+            }
+        }
+
+        private void LoadCodeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                try
+                {
+                    using (StreamReader sr = new StreamReader(filePath))
+                    {
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            Console.WriteLine("Processing line: {0}", line);
+                            // Process each line as needed, similar to your clipboard
+                            WonderlandsSerial item = WonderlandsSerial.DecryptSerial(line);
+                            if (item == null) continue; // Skip to next line if processing failed or item is null
+
+                            if (profile == null) saveGame.AddItem(item);
+                            else profile.BankItems.Add(item);
+
+                        }
+                    }
+
+                    // Refresh your ListView or any other UI elements here, after all lines have been processed
+                    BackpackListView.ItemsSource = null;
+                    BackpackListView.ItemsSource = SlotItems;
+                    BackpackListView.Items.Refresh();
+                    RefreshBackpackView();
+                }
+                catch (BL3Tools.BL3Tools.BL3Exceptions.SerialParseException ex)
+                {
+                    Console.WriteLine($"Error parsing data from file: {ex.Message}");
+                    if (ex.knowCause)
+                        MessageBox.Show($"Error parsing data: {ex.Message}", "Data Parse Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"General exception loading data: {ex.Message}");
+                    MessageBox.Show($"Error loading data: {ex.Message}", "Load Data Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void DUMPCodeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                FileName = "ItemCodes",
+                DefaultExt = ".txt", 
+                Filter = "Text documents (.txt)|*.txt" 
+            };
+
+            bool? result = saveFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = saveFileDialog.FileName;
+
+                var slotItems = SlotItems;
+
+                DumpSlotItemsToFile(slotItems.Cast<StringSerialPair>(), filename);
+            }
+        }
+        public void DumpSlotItemsToFile(IEnumerable<StringSerialPair> slotItems, string filePath)
+        {
+            using (var writer = new StreamWriter(filePath))
+            {
+                foreach (var item in slotItems)
+                {
+                    writer.WriteLine(item.Val2.EncryptSerial(0));
+                }
+            }
+        }
+
+
+        public void DumpSlotItemsToFile(IEnumerable<object> slotItems, string filePath)
+        {
+
         }
 
         private void SelectedPlaythroughBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
