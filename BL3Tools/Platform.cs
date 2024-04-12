@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel;
 
-namespace BL3Tools {
+namespace BL3Tools
+{
 
     /// <summary>
     /// Defines the platform that a given <see cref="BL3Save"/>/<see cref="BL3Profile"/> can have
     /// <para>Particularly used for encryption/decryption of the profile</para>
     /// </summary>
-    public enum Platform {
+    public enum Platform
+    {
         /// <summary>
         /// A PC save/profile
         /// </summary>
@@ -20,7 +22,7 @@ namespace BL3Tools {
         PS4 = 0x02,
 
         /// <summary>
-        /// A <b>decrypted</b> Save Wizard's PS4 save.
+        /// Save Wizard's PS4 save.
         /// </summary>
         [Description("JSON")]
         JSON = 0x03

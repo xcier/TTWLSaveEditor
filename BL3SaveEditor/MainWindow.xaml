@@ -263,7 +263,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
                         ItemsSource="{Binding Source={StaticResource PlatformDataSource}}"
-                        SelectedValue="{Binding Path=saveGame.Platform}" />
+                        SelectedValue="{Binding Path=saveGame.Platform, Mode=TwoWay}" />
                     <Button Content="Import Missions" x:Name="ImportMissionsBtn" Click="ImportMissionsBtn_Click"
                         Margin="0,143,1057,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="131"
                         ToolTip="Imports Missions From Another Save" />
@@ -985,7 +985,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem IsEnabled="{Binding SaveGameLoaded, TargetNullValue=False}">
+            <TabItem IsEnabled="{Binding saveGame, TargetNullValue=False}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="27" Height="26" Source="Icons\game\Regions.png" Margin="0 0 5 0"
@@ -1020,7 +1020,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem IsEnabled="{Binding SaveGameLoaded, TargetNullValue=False}">
+            <TabItem IsEnabled="{Binding saveGame, TargetNullValue=False}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="27" Height="26" Source="Icons/game/SkillTrees.png" Margin="0 0 5 0" RenderOptions.BitmapScalingMode="Fant" />
@@ -1625,7 +1625,7 @@
                                             </DockPanel>
                                         </TabItem>
                                     </TabControl>
-                                    <TabControl Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,30,0,0">
+                                    <TabControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="82,30,0.091,0" Grid.ColumnSpan="2">
                                         <TabControl.Resources>
                                             <DataTemplate x:Key="TabTemplate">
                                                 <Grid Height="30">
@@ -1647,11 +1647,12 @@
 
                                             <DataTemplate x:Key="ReorderTemplate">
                                                 <StackPanel Orientation="Horizontal" Height="30">
+                                                    <CheckBox x:Name="DisableConfirmationCheckbox" Content="No Confirmation" Margin="5" Checked="DisableConfirmationCheckbox_Checked" Unchecked="DisableConfirmationCheckbox_Unchecked"/>
                                                     <CheckBox Margin="0,0,5,0" Content="Reorder Parts" IsChecked="{Binding  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}, Path=IsReorder}"></CheckBox>
-                                                    <Button Click="upBtn_Click" Name="upBtn" MinWidth="70">Up</Button>
-                                                    <Button Click="downBtn_Click" Name="downBtn" MinWidth="70">Down</Button>
-                                                    <Button Click="topBtn_Click" Name="topBtn" MinWidth="70">Top</Button>
-                                                    <Button Click="bottomBtn_Click" Name="bottomBtn" MinWidth="70">Bottom</Button>
+                                                    <Button Click="upBtn_Click" Name="upBtn" MinWidth="60">Up</Button>
+                                                    <Button Click="downBtn_Click" Name="downBtn" MinWidth="60">Down</Button>
+                                                    <Button Click="topBtn_Click" Name="topBtn" MinWidth="60">Top</Button>
+                                                    <Button Click="bottomBtn_Click" Name="bottomBtn" MinWidth="60">Bottom</Button>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </TabControl.Resources>
@@ -2646,7 +2647,7 @@
                                 <LineBreak />
                             </TextBlock>
 
-                            <TextBlock FontSize="13" TextWrapping="Wrap"><Run FontWeight="Black" Text="v1.1.6.7"/><LineBreak/><Run Text="        • Supports REDUX v1.0.3 saves (via REDUX mode select)"/><LineBreak/><Run Text="        • For testing purposes only. BACKUP YOUR ORIGINAL SAVES BEFORE USING!"/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><Run Text="ProtoGibbed V1.0.0"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing (Thank Levin for sharing the csv files!)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.1"/><LineBreak/><Run Text="        • Removed Bold Font"/><LineBreak/><Run Text="        • Fixed Redux Mode Maybe (I don't have a save to test [but at least it prevents the crash])"/><LineBreak/><Run Text="        • Added Working Fast Travel Tab (not sure how it will affect story)"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon (not sure if it will break/delete current item due to how the previous code handles items in slot)"/><LineBreak/><Run/><LineBreak/><Run Text="V1.0.2"/><LineBreak/><Run Text="        • oopsie! Chaotic levels are back!"/><LineBreak/><Run Text="        "/><LineBreak/><Run Text="v1.0.3"/><LineBreak/><Run Text="        • Added unsupported weapon"/><LineBreak/><Run Text="        • Added last active fast travel station (I will eventually collect the data for the travel stations and make it similar to BL2 editor)"/><LineBreak/><Run Text="        • Made some minor UI tweaks (unlocked the last few missing things in Raw profile tab)"/><LineBreak/><Run/><LineBreak/><Run/><LineBreak/><Run/></TextBlock>
+                            <TextBlock FontSize="13" TextWrapping="Wrap"><LineBreak/><Run Text="This editor was originally created by FromDarkHell Forked by Arwent then kept up to date by greenlight/shroomz."/><LineBreak/><LineBreak/><Run Text="Differences in ProtoGibbed from release:"/><LineBreak/><Run Text="        • Unlocked Raw Tab"/><LineBreak/><Run Text="        • Added New UI to inventory Tab"/><LineBreak/><Run Text="        • Added LootLemon Importing "/><LineBreak/><Run Text="        • Added Working Fast Travel Tab"/><LineBreak/><Run Text="        • Added Unlock 4th Weapon"/><LineBreak/><Run Text="        • Added unsupported gear"/><LineBreak/><Run Text="        • Added last active fast travel station (I will eventually collect the data for the travel stations and make it similar to BL2 editor)"/><LineBreak/><Run Text="        • Made some minor UI tweaks"/><LineBreak/><Run Foreground="#00000000" Text="     •"/><Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas" Text=" "/><Run Text="•Added a Region Data Tab"/><LineBreak/><Run Foreground="#00000000" Text="      • "/><Run Text="•Added a Skill Tree Tab"/><LineBreak/><Run Foreground="#00000000" Text="      • "/><Run Text="•Added New Character/Profile Buttons"/><LineBreak/><Run Foreground="#00000000" Text="     • "/><Run Foreground="#00000000" Text="•"/><Run Text="•Added Confirmation for part removal to prevent accidents"/><LineBreak/><Run/><LineBreak/><Run Text="Join my discord for FREE PS4 savedata decryption "/><LineBreak/><Hyperlink NavigateUri="https://discord.gg/AhB4NgtPhK" TextDecorations="Underline"><Run Text="FREE PS4 SAVE DECRYPTION: https://discord.gg/Xcier"/></Hyperlink><LineBreak/><Run/></TextBlock>
                         </WrapPanel>
                     </Grid>
 

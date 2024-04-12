@@ -1644,14 +1644,14 @@ namespace TTWSaveEditor
                 bool bRedux = InventorySerialDatabase.bReduxDb;
 
                 // if REDUX mode has changed, store new bool and reset
-                if (bRedux != rmChecked) 
+                if (bRedux != rmChecked)
                 {
                     // update REDUX mode setting in app
                     Properties.Settings.Default.bReduxModeEnabled = rmChecked;
                     Properties.Settings.Default.Save();
 
                     // verify restart
-                    if (changeReduxMode()) 
+                    if (changeReduxMode())
                     {
                         // pass checked REDUX mode bool value to BL3Tools setting 
                         InventorySerialDatabase.setIsRedux(rmChecked);
@@ -1660,17 +1660,17 @@ namespace TTWSaveEditor
                         Process.Start(Process.GetCurrentProcess().MainModule.FileName);
                         Application.Current.Shutdown();
                     }
-                    else 
-                    { 
+                    else
+                    {
                         // user cancelled, revert checkbox to previous state
-                        if (rmChecked == true) 
-                        { 
-                            ReduxMode.IsChecked = false; 
+                        if (rmChecked == true)
+                        {
+                            ReduxMode.IsChecked = false;
                         }
-                        else 
-                        { 
+                        else
+                        {
                             ReduxMode.IsChecked = true;
-                        } 
+                        }
                     }
                 }
             }
@@ -1731,20 +1731,56 @@ namespace TTWSaveEditor
             }
         }
 
+        // Confirmation function for removing parts
+        private void DisableConfirmationCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            ConfirmationEnabled = false;
+        }
+
+        private void DisableConfirmationCheckbox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ConfirmationEnabled = true;
+        }
+
+        private bool _confirmationEnabled = true;
+        public bool ConfirmationEnabled
+        {
+            get => _confirmationEnabled;
+            set
+            {
+                _confirmationEnabled = value;
+                OnPropertyChanged(nameof(ConfirmationEnabled));
+            }
+        }
+
         private void PartsOnRemove(object sender, MouseButtonEventArgs e)
         {
             if (!IsReorder)
             {
                 var allowEvent = !disableEvents;
-                if (sender is ListView view && allowEvent)
+                if (sender is ListView view && allowEvent && view.SelectedIndex != -1)
                 {
-                    disableEvents = true;
-                    if (view.SelectedIndex != -1)
+                    bool proceedWithRemoval = true;
+
+                    // Show confirmation only if ConfirmationEnabled is true.
+                    if (ConfirmationEnabled)
                     {
+                        MessageBoxResult confirmation = MessageBox.Show(
+                            "Are you sure you want to remove this part?",
+                            "Confirm Removal",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question);
+
+                        proceedWithRemoval = confirmation == MessageBoxResult.Yes;
+                    }
+
+                    if (proceedWithRemoval)
+                    {
+                        disableEvents = true;
                         RemovePart(view.SelectedIndex, sender != ListViewSelectedParts);
                         view.SelectedIndex = -1;
+                        disableEvents = false;
                     }
-                    disableEvents = false;
                 }
             }
         }
@@ -2196,8 +2232,8 @@ namespace TTWSaveEditor
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 FileName = "ItemCodes",
-                DefaultExt = ".txt", 
-                Filter = "Text documents (.txt)|*.txt" 
+                DefaultExt = ".txt",
+                Filter = "Text documents (.txt)|*.txt"
             };
 
             bool? result = saveFileDialog.ShowDialog();
@@ -2237,26 +2273,26 @@ namespace TTWSaveEditor
         {
 
         }
+
+        public class DelegateCommand : ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+            private Action<object> action;
+
+            public DelegateCommand(Action<object> action)
+            {
+                this.action = action;
+            }
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                action.Invoke(parameter);
+            }
+        }
+
     }
-
-    public class DelegateCommand : ICommand
-    {
-        public event EventHandler CanExecuteChanged;
-        private Action<object> action;
-
-        public DelegateCommand(Action<object> action)
-        {
-            this.action = action;
-        }
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            action.Invoke(parameter);
-        }
-    }
-
 }

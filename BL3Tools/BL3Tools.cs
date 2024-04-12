@@ -23,6 +23,7 @@ namespace BL3Tools
                 public InvalidSaveException() : base("Invalid TTW Save") { }
                 public InvalidSaveException(string saveGameType) : base(String.Format("Invalid TTW Save Game Type: {0}", saveGameType)) { }
                 public InvalidSaveException(Platform platform) : base(String.Format("Incorrectly decrypted save game using the {0} platform; Are you sure you're using the right one?", platform)) { }
+
             }
 
 
